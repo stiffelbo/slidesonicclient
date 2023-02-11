@@ -1,0 +1,40 @@
+.card{
+    padding: 0.5em;
+    height: 100%;
+    position: relative;
+}
+
+.deleteBtn{
+    position: absolute;
+    top: 0.5em;
+    right: 0.5em;
+    visibility: hidden;
+    transition: all 0.3s ease-in-out;
+}
+
+.copyBtn{
+    position: absolute;
+    top: 0.5em;
+    right: 2em;
+    visibility: hidden;
+    transition: all 0.3s ease-in-out;
+}
+
+.buttonBox{
+    visibility: hidden;
+    transition: all 0.3s ease-in-out;
+}
+
+.card:hover .buttonBox{
+    visibility: visible;
+    transition: all 0.3s ease-in-out;
+}
+.card:hover .deleteBtn{
+    visibility: visible;
+    transition: all 0.3s ease-in-out;
+}
+
+.card:hover .copyBtn{
+    visibility: visible;
+    transition: all 0.3s ease-in-out;
+}

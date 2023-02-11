@@ -1,0 +1,15 @@
+.dropZone{
+    border: 2px dashed gray;
+    height: 150px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.dropZone h4{
+    color: gray;
+}
+.dropZone p{
+    color: gray;
+}
