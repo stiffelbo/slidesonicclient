@@ -12,6 +12,7 @@ export const getCollection = ({ collections }, name) => {
 };
 
 export const getCollections = ({ collections }) => collections.data;
+export const getCurrent = ({ collections }) => collections.current;
 
 /* ACTIONS */
 
@@ -22,13 +23,13 @@ const createActionName = name => `app/${reducerName}/${name}`;
 const LOAD_COLLECTIONS = createActionName('LOAD_COLLECTIONS');
 const ADD_COLLECTION = createActionName('ADD_COLLECTION');
 const UPDATE_COLLECTION = createActionName('UPDATE_COLLECTION');
-const DELETE_COLLECTION = createActionName('DELETE_COLLECTION');
+const SET_CURRENT = createActionName('SET_CURRENT');
 
 
 export const loadCollections = payload => ({ payload, type: LOAD_COLLECTIONS });
 export const addCollection = payload => ({ payload, type: ADD_COLLECTION });
 export const updateCollection = payload => ({ payload, type: UPDATE_COLLECTION });
-export const deleteCollection = payload => ({ payload, type: DELETE_COLLECTION });
+export const setCurrent = payload => ({ payload, type: SET_CURRENT });
 
 /* THUNKS */
 
@@ -68,10 +69,20 @@ export const updateCollectionRequest = (name, data) => {
 export const deleteCollectionRequest = (name) => {
     return dispatch => {
       try {
-        let res = ls.deleteCollection(name);   
-        dispatch(deleteCollection(res));
+        ls.deleteCollection(name);
+        let res = ls.getCollections();   
+        dispatch(loadCollections(res)); 
       } catch(e) {
         toast.error('Could not delete collection');
+      }  
+    };
+};
+export const setCurrentRequest = (name) => {
+    return dispatch => {
+      try {
+        dispatch(setCurrent(name));
+      } catch(e) {
+        toast.error('Could notset current collection');
       }  
     };
 };
@@ -81,6 +92,7 @@ export const deleteCollectionRequest = (name) => {
 
 const initialState = {
     data: {},
+    current : '',
 };
 
 /* REDUCER */
@@ -88,16 +100,13 @@ const initialState = {
 export default function collectionsReducer(statePart = initialState, action = {}) {
     switch (action.type) {
         case LOAD_COLLECTIONS: 
-            return { ...statePart, data: action.payload };
+            return { ...statePart, data: action.payload, current: '' };
         case ADD_COLLECTION: 
-            console.log(action.payload);
             return { ...statePart, data: {...statePart.data, ...action.payload }};
         case UPDATE_COLLECTION: 
             return { ...statePart, data: {...statePart.data, ...action.payload }};
-        case DELETE_COLLECTION: 
-            const newData = {...statePart.data};
-            delete newData[action.payload];
-            return { ...statePart, data: {...newData }};
+        case SET_CURRENT: 
+            return { ...statePart, current: action.payload};
         default:
             return statePart;
     }

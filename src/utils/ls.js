@@ -2,20 +2,13 @@ import { toast } from "react-toastify";
 
 export const ls = {
     getCollections: () => {
-        let collections = [];
-        for (let key in localStorage) {
-          let value = JSON.parse(localStorage.getItem(key));
-          if (Array.isArray(value)) {
-            collections.push(key);
-          }
-        }
+        const collections  = localStorage;     
         return collections;
     },
     addCollection: (collName) => {
-        console.log(collName);
         try {
           localStorage.setItem(collName, JSON.stringify([]));
-          return {[collName] : {}}
+          return {[collName] : []}
         } catch (error) {
           toast.error('Error while adding collection: ' + error.message);
         }

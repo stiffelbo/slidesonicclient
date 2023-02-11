@@ -7,6 +7,7 @@ import { ToastContainer, toast } from "react-toastify";
 //Redux
 import { connect } from 'react-redux';
 import { setRwdMode, getRwd } from "./store/rwdRedux";
+import { loadCollectionsRequest } from "./store/collectionsRedux";
 
 
 //Comp
@@ -24,7 +25,7 @@ class App extends Component {
 
 
   componentDidMount(){
-    const {setRwd} = this.props;
+    const {setRwd, loadCollections} = this.props;
     //RWD
     const height = window.innerHeight;
     const width = window.innerWidth;
@@ -32,6 +33,8 @@ class App extends Component {
     window.addEventListener('resize', e => {
       this.handleResize(e);
     });
+
+    loadCollections();
   }
 
   componentWillUnmount(){
@@ -60,6 +63,7 @@ class App extends Component {
 
 const mapDispatchToProps = dispatch => ({
   setRwd : mode => dispatch(setRwdMode(mode)),
+  loadCollections : ()=>dispatch(loadCollectionsRequest()),
 });
 
 const mapStateToProps = state => ({
