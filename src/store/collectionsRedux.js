@@ -90,6 +90,7 @@ export default function collectionsReducer(statePart = initialState, action = {}
         case LOAD_COLLECTIONS: 
             return { ...statePart, data: action.payload };
         case ADD_COLLECTION: 
+            console.log(action.payload);
             return { ...statePart, data: {...statePart.data, ...action.payload }};
         case UPDATE_COLLECTION: 
             return { ...statePart, data: {...statePart.data, ...action.payload }};

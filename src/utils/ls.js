@@ -12,25 +12,17 @@ export const ls = {
         return collections;
     },
     addCollection: (collName) => {
+        console.log(collName);
         try {
           localStorage.setItem(collName, JSON.stringify([]));
-          return {collName : {}}
+          return {[collName] : {}}
         } catch (error) {
           toast.error('Error while adding collection: ' + error.message);
         }
     },
-    addToCollection: (collName, obj) => {
-    try {
-        let collection = JSON.parse(localStorage.getItem(collName));
-        collection.push(obj);
-        localStorage.setItem(collName, JSON.stringify(collection));
-        } catch (error) {
-            toast.error('Error while adding to collection: ' + error.message);
-        }
-    },
     updateCollection: (collName, array) => {
       localStorage.setItem(collName, JSON.stringify(array));
-      return {collName : array}
+      return {[collName] : array}
     },
     deleteCollection: (collName) => {
       localStorage.removeItem(collName);

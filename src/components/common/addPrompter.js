@@ -6,6 +6,10 @@ import PropTypes from 'prop-types';
 import { TextField, IconButton, Grid, Box } from '@mui/material';
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 
+function sanitizeString(str) {
+    return str.toLowerCase().replace(/[^a-z0-9 ]/g, "").replace(/\s+/g, "_");
+}
+
 class AddPrompter extends Component {
     state = { 
         value : '',
@@ -17,21 +21,39 @@ class AddPrompter extends Component {
         }
     }
 
-    handleChange (e){
-        const value = e.target.value;
-        this.setState({value})
+    handleChange = (e) => {
+        const prohibitedNames = [...this.props.prohibitedNames];
+        let value = e.target.value;
+        value = sanitizeString(value);
+        if(prohibitedNames.indexOf(value) > -1){
+            this.setState({error: 'Collection Exists'})
+        }else{
+            this.setState({value, error : ''});
+        }        
+    }
+
+    handleSubmit = (e) => {
+        e.preventDefault();
+        const {value} = this.state;
+        if(value){
+            this.props.callback(value);
+            this.setState({value: ''});
+        }
     }
 
     render() { 
-        return (       
-            <TextField 
-                label="Collection Name"
-                size="small"
-                value={this.state.value}
-                sx={{width: "100%"}}
-                variant="standard"
-                onChange={e => this.handleChange(e)}
-            />
+        return (    
+            <form onSubmit={this.handleSubmit}>
+                <TextField 
+                    label="Collection Name"
+                    size="small"
+                    value={this.state.value}
+                    sx={{width: "100%"}}
+                    variant="standard"
+                    onChange={e => this.handleChange(e)}
+                    helperText={this.state.error}
+                />
+            </form>   
         );
     }
 }

@@ -43,10 +43,14 @@ const Menu = ({collections, add, remove, update}) => {
         }
     }
 
-    return ( <Box>
+    const handleAddCollection = value => {
+        add(value);
+    }
+
+    return ( <Box p={1}>
         <Grid container>
             <Grid item md={6}>
-                <AddPrompter callback={handleAddUrl} />
+                <AddPrompter callback={handleAddCollection} />
             </Grid>
             <Grid item md={6}>
                 {renderCollectionsList()}
