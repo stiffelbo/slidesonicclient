@@ -55,7 +55,7 @@ const Menu = ({collections, add, remove, update, current, setCurrent}) => {
     const renderCollection = () => {
         if(current){
             return <Grid container spacing={3}>
-                <Grid item>
+                <Grid item md={10}>
                     <Typography variant="h6">{current}</Typography>
                 </Grid>
                 <Grid item>

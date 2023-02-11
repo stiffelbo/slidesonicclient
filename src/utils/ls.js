@@ -2,8 +2,18 @@ import { toast } from "react-toastify";
 
 export const ls = {
     getCollections: () => {
-        const collections  = localStorage;     
-        return collections;
+        const data = {};
+        const collections  = localStorage;  
+        if(collections){
+          const keys = Object.keys(collections);
+          if(keys.length){
+            keys.map(key => {
+              const item = JSON.parse(collections[key]);
+              data[key] = item;
+            })
+          }
+        }
+        return data;
     },
     addCollection: (collName) => {
         try {

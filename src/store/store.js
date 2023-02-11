@@ -8,17 +8,11 @@ import thunk from 'redux-thunk';
 import {rwdReducer} from './rwdRedux';
 import collectionsReducer from './collectionsRedux';
 
-
-
-
 // define reducers  
 const reducers = {
     rwd : rwdReducer,
     collections : collectionsReducer,
 };
-
-
-console.log(reducers);
 
 // combine reducers
 const rootReducer = combineReducers(reducers);

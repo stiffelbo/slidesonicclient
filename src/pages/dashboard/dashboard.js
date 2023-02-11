@@ -8,24 +8,21 @@ import { getRwd } from "../../store/rwdRedux";
 import { Grid, Box } from "@mui/material";
 //comp
 import {Menu} from "../../components/menu/menu";
+import {Gallery} from "../../components/gallery/gallery";
 
 const Dashboard = ({rwd}) => {
-    const firstColWidth = rwd.width / 4;
+    const firstColWidth = rwd.width / 5;
     const restWidth = rwd.width - firstColWidth;
-    const cellHeight = rwd.height / 3;
   
     return (
-      <div style={{display: 'flex', width: rwd.width, height: rwd.height}}>
-        <div style={{width: firstColWidth, height: rwd.height}}>
-          <div style={{width: firstColWidth, height: cellHeight}}>
+      <div style={{display: 'flex', width: '100%', height: '100%', padding: 0, margin: 0}}>
+        <div style={{width: firstColWidth, height: '100%'}}>
+          <div style={{width: firstColWidth, height: '100%'}}>
             <Menu />
           </div>
-          <div style={{width: firstColWidth, height: cellHeight}}>
-            Menu
-          </div>
         </div>
-        <div style={{width: restWidth, height: rwd.height}}>
-          Gallery
+        <div style={{width: restWidth, height: '100%'}}>
+          <Gallery />
         </div>
       </div>
     );

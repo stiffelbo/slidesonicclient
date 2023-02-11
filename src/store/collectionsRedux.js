@@ -7,8 +7,12 @@ export const getCollectionNames = ({ collections }) => {
     return keys;
 };
 
-export const getCollection = ({ collections }, name) => {
-    return collections.data[name];
+export const getCurrentCollection = ({ collections }) => {
+    if(collections.current){
+        return collections.data[collections.current];
+    }else{
+        return [];
+    }
 };
 
 export const getCollections = ({ collections }) => collections.data;
@@ -58,8 +62,9 @@ export const addCollectionRequest = (name) => {
 export const updateCollectionRequest = (name, data) => {
     return dispatch => {
       try {
-        let res = ls.updateCollection(name, data);   
-        dispatch(updateCollection(res));
+        ls.updateCollection(name, data);   
+        let res = ls.getCollections();   
+        dispatch(loadCollections(res));
       } catch(e) {
         toast.error('Could not add collection');
       }  
@@ -100,7 +105,16 @@ const initialState = {
 export default function collectionsReducer(statePart = initialState, action = {}) {
     switch (action.type) {
         case LOAD_COLLECTIONS: 
-            return { ...statePart, data: action.payload, current: '' };
+            if(statePart.current){
+                const collections = Object.keys(action.payload);
+                if(collections.length && collections.indexOf(statePart.current) > -1){
+                    return { ...statePart, data: action.payload, current: statePart.current };
+                }else{
+                    return { ...statePart, data: action.payload, current: '' };
+                }
+            }else{
+                return { ...statePart, data: action.payload, current: '' };
+            }
         case ADD_COLLECTION: 
             return { ...statePart, data: {...statePart.data, ...action.payload }};
         case UPDATE_COLLECTION: 
