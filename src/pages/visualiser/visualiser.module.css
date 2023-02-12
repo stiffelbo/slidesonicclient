@@ -1,0 +1,10 @@
+.root{
+    height: 100%;
+    width: 100%;
+}
+
+.wrapper{
+    max-height: 100%;
+    max-width: 100%;
+    background-size: cover;
+}

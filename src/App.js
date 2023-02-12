@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Route, Redirect, Switch } from "react-router-dom";
+import { Route, Redirect, Switch, Router, withRouter } from "react-router-dom";
 import "react-toastify/dist/ReactToastify.css";
 import "./App.css";
 import { ToastContainer, toast } from "react-toastify";
@@ -15,7 +15,7 @@ import MainLayout from "./components/layout/mainLayout";
 
 //pages
 import {Dashboard} from './pages/dashboard/dashboard';
-import Player from './pages/player/player';
+import {Visualiser} from './pages/visualiser/visualiser';
 
 class App extends Component {
 
@@ -52,10 +52,14 @@ class App extends Component {
     return (
       <MainLayout rwd={this.props.rwd}>
         <ToastContainer></ToastContainer>
-        <Switch location={window.location}>
-          <Route path="/player" component={Player}/>
-          <Route path="/" component={Dashboard}/>
-        </Switch>
+        <Router history={this.props.history}>
+            <Switch location={window.location}>
+              <Route path="/player" component={Visualiser}/>
+              <Route path="/dash" component={Dashboard}/>
+              <Redirect from="/" to="/dash" />
+            </Switch>
+        </Router>
+        
       </MainLayout>
     );
   }
@@ -70,6 +74,6 @@ const mapStateToProps = state => ({
   rwd : getRwd(state),
 });
 
-const Container = connect(mapStateToProps, mapDispatchToProps)(App);
+const Application = connect(mapStateToProps, mapDispatchToProps)(App);
 
-export {Container as  App};
+export default withRouter(Application);

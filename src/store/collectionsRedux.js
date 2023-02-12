@@ -17,6 +17,7 @@ export const getCurrentCollection = ({ collections }) => {
 
 export const getCollections = ({ collections }) => collections.data;
 export const getCurrent = ({ collections }) => collections.current;
+export const getIdx = ({ collections }) => collections.idx;
 
 /* ACTIONS */
 
@@ -28,12 +29,14 @@ const LOAD_COLLECTIONS = createActionName('LOAD_COLLECTIONS');
 const ADD_COLLECTION = createActionName('ADD_COLLECTION');
 const UPDATE_COLLECTION = createActionName('UPDATE_COLLECTION');
 const SET_CURRENT = createActionName('SET_CURRENT');
+const SET_IDX = createActionName('SET_IDX');
 
 
 export const loadCollections = payload => ({ payload, type: LOAD_COLLECTIONS });
 export const addCollection = payload => ({ payload, type: ADD_COLLECTION });
 export const updateCollection = payload => ({ payload, type: UPDATE_COLLECTION });
 export const setCurrent = payload => ({ payload, type: SET_CURRENT });
+export const setIdx = payload => ({ payload, type: SET_IDX });
 
 /* THUNKS */
 
@@ -91,6 +94,15 @@ export const setCurrentRequest = (name) => {
       }  
     };
 };
+export const setIdxRequest = (val) => {
+    return dispatch => {
+      try {
+        dispatch(setIdx(val));
+      } catch(e) {
+        toast.error('Could notset idx for image set');
+      }  
+    };
+};
 
 
 /* INITIAL STATE */
@@ -98,6 +110,7 @@ export const setCurrentRequest = (name) => {
 const initialState = {
     data: {},
     current : '',
+    idx : 0,
 };
 
 /* REDUCER */
@@ -121,6 +134,8 @@ export default function collectionsReducer(statePart = initialState, action = {}
             return { ...statePart, data: {...statePart.data, ...action.payload }};
         case SET_CURRENT: 
             return { ...statePart, current: action.payload};
+        case SET_IDX: 
+            return { ...statePart, idx: action.payload};
         default:
             return statePart;
     }

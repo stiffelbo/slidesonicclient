@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import classes from './menu.module.css';
 //Redux
 import { connect } from 'react-redux';
 import { getCollections, addCollectionRequest, deleteCollectionRequest, updateCollectionRequest, getCurrent, setCurrentRequest } from "../../store/collectionsRedux";
@@ -11,6 +12,7 @@ import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 import UrlPrompter from "../common/urlPrompter";
 import AddPrompter from "../common/addPrompter";
 import SelectSimple from "../common/selectSimple";
+import Nav from "../nav/nav";
 
 const Menu = ({collections, add, remove, update, current, setCurrent}) => {
 
@@ -72,8 +74,11 @@ const Menu = ({collections, add, remove, update, current, setCurrent}) => {
         }
     }    
 
-    return ( <Box p={1}>
+    return ( <Box p={1} className={classes.root}>
         <Grid container spacing={3}>
+            <Grid item md={12}>
+                <Nav />
+            </Grid>
             <Grid item md={12}>
                 {renderCollection()}
             </Grid>
@@ -93,7 +98,6 @@ const Menu = ({collections, add, remove, update, current, setCurrent}) => {
     </Box> );
 }
  
-export default Menu;
 
 const mapDispatchToProps = dispatch => ({
     add : name => dispatch(addCollectionRequest(name)),

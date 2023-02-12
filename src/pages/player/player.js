@@ -2,6 +2,11 @@ import React, { useState, useEffect } from 'react';
 
 import classes from './player.module.css';
 
+//Redux
+import { connect } from 'react-redux';
+import { setIdxRequest, getIdx, getCurrentCollection } from './../../store/collectionsRedux';
+
+
 //Mui
 import { Typography } from '@mui/material';
 
@@ -11,21 +16,17 @@ function getRandomElement(arr) {
   return arr[Math.floor(Math.random() * arr.length)];
 }
 
-const Player = ({ images, bpm, setBpm, rwd, setMode, currentImage, setCurrentImage }) => {
+const Player = ({ images, idx, setIdx}) => {
 
   const [animation, setAnimation] = useState('');
   const [transition, setTransition] = useState('');
   const [random, setRandom] = useState(false);
   const [autoPlay, setAutoplay] = useState(false);
   const [intervalId, setIntervalId] = useState(null);
+  const [bpm, setBpm] = useState(null);
 
   const time = 60 / bpm * 2;
   const timeClear = (60 / bpm) * 1000 * 1.2;
-  const style = {
-    width: '${rwd.width}px', 
-    height: `${rwd.height}px`,
-    textAlign: 'center',
-  };
 
   const clear = () => {
     setAnimation('');
@@ -38,7 +39,7 @@ const Player = ({ images, bpm, setBpm, rwd, setMode, currentImage, setCurrentIma
       setAnimation(transition);
     }
     setTimeout(()=>{
-      setCurrentImage((currentImage + 1 + images.length) % images.length);
+      setIdx((idx + 1 + images.length) % images.length);
     }, timeClear / 4);
     setTimeout(clear, timeClear);    
   }
@@ -50,27 +51,10 @@ const Player = ({ images, bpm, setBpm, rwd, setMode, currentImage, setCurrentIma
       setAnimation(transition);
     }
     setTimeout(()=>{
-      setCurrentImage((currentImage - 1 + images.length) % images.length);
+      setIdx((idx - 1 + images.length) % images.length);
     }, timeClear / 4);
     setTimeout(clear, timeClear);    
   }
-
-  useEffect(()=>{    
-    if(autoPlay && !intervalId){
-      const interval = 60 / bpm * 8 * 1000;
-      console.log('set interval: ', intervalId);
-      setIntervalId(setInterval(nextImage, interval));      
-    }
-    if(!autoPlay){
-      console.log('clear Interval: ', intervalId);
-      clearInterval(intervalId);
-    }
-    return () => clearInterval(intervalId);
-  }, [autoPlay]);
-
-  useEffect(()=>{
-  }, [animation, transition, currentImage]);
-
   
   useEffect(() => {
     const handleKeyDown = (event) => {
@@ -155,22 +139,25 @@ const Player = ({ images, bpm, setBpm, rwd, setMode, currentImage, setCurrentIma
     return () => {
       window.removeEventListener('keydown', handleKeyDown);
     };
-  }, [currentImage, images.length, transition, animation, bpm, random, autoPlay]);
+  }, [idx, images.length, transition, animation, bpm, random, autoPlay]);
 
 
   return (
-    <div style={style}>
-        <div style={{position: 'absolute', top: '0.5em', left: '0.5em', display: 'flex', flexDirection: 'column', alignItems: 'flex-start'}}>
-            <img src="/img/logo.png" style={{width: '90px', cursor: 'pointer'}} className={classes.logo} onClick={()=>setMode('dash')}></img>
-            <Typography variant="body1">T: {transition}</Typography>
-            <Typography variant="body1">BPM: {bpm}</Typography>
-            <Typography variant="body1">{animation && 'A: ' && animation}</Typography>
-            <Typography variant="body1">{random && 'Random'}</Typography>
-            <Typography variant="body1">{autoPlay && 'Autoplay'}</Typography>
-        </div>
-        <img src={images[currentImage]} style={{height: '100%', '--time' : `${time}s`}} className={classes[animation]}/>
+    <div>
+        <img src={images[idx]} style={{height: '100%', '--time' : `${time}s`}} className={classes[animation]}/>
     </div>
   );
 };
 
-export default Player;
+const mapDispatchToProps = dispatch => ({
+  setIdx : name => dispatch(setIdxRequest(name)),
+});
+
+const mapStateToProps = state => ({
+  images : getCurrentCollection(state),
+  idx : getIdx(state),
+});
+
+const Container = connect(mapStateToProps, mapDispatchToProps)(Player);
+
+export {Container as  Player};
