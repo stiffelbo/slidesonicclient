@@ -143,7 +143,7 @@ const Player = ({ images, idx, setIdx}) => {
 
 
   return (
-    <div>
+    <div className={classes.root}>
         <img src={images[idx]} style={{height: '100%', '--time' : `${time}s`}} className={classes[animation]}/>
     </div>
   );

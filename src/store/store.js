@@ -7,11 +7,13 @@ import thunk from 'redux-thunk';
 //aplication flow reducers
 import {rwdReducer} from './rwdRedux';
 import collectionsReducer from './collectionsRedux';
+import visualsReducer from './visualsRedux';
 
 // define reducers  
 const reducers = {
     rwd : rwdReducer,
     collections : collectionsReducer,
+    visuals : visualsReducer,
 };
 
 // combine reducers
